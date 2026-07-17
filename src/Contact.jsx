@@ -1,11 +1,36 @@
-import React from "react";
+import React, { useRef } from "react";
+import emailjs from "@emailjs/browser";
 import "./Contact.css";
 
 const Contact = () => {
+
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(
+        "service_zg8qhqi",
+        "template_ahizfne",
+        form.current,
+        "EfwlOOC09uqXSNC0v"
+      )
+      .then(
+        () => {
+          alert("Message sent successfully!");
+          form.current.reset();
+        },
+        (error) => {
+          alert("Failed to send message.");
+          console.log(error.text);
+        }
+      );
+  };
+
   return (
     <div className="contact-page">
 
-      {/* Hero Section */}
       <section className="contact-hero">
         <h4>CONTACT US</h4>
         <h1>We'd Love To Hear From You</h1>
@@ -15,7 +40,6 @@ const Contact = () => {
         </p>
       </section>
 
-      {/* Contact Section */}
       <section className="contact-container">
 
         {/* Left Side */}
@@ -27,7 +51,7 @@ const Contact = () => {
             <div className="icon">📍</div>
             <div>
               <h3>Address</h3>
-              <p>kakkanad Food Street, kochi, kerala</p>
+              <p>Kakkanad Food Street, Kochi, Kerala</p>
             </div>
           </div>
 
@@ -62,26 +86,34 @@ const Contact = () => {
 
           <h2>Send Message</h2>
 
-          <form>
+          <form ref={form} onSubmit={sendEmail}>
 
             <input
               type="text"
+              name="user_name"
               placeholder="Your Name"
+              required
             />
 
             <input
               type="email"
+              name="user_email"
               placeholder="Your Email"
+              required
             />
 
             <input
               type="text"
+              name="subject"
               placeholder="Subject"
+              required
             />
 
             <textarea
+              name="message"
               rows="6"
               placeholder="Write Your Message..."
+              required
             ></textarea>
 
             <button type="submit">
